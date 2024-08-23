@@ -1,5 +1,5 @@
 const canvas = document.querySelector("canvas")
-const ctx = canvas.getContext("2d")
+const ctx = canvas.getContext ("2d")
 
 const size = 30
 
@@ -9,7 +9,19 @@ const snake = [
    
     
 ]
+
+const food={
+    x:90,
+    y:90,
+    color: "yellow"
+}
 let direction ,loopId
+
+const drawFood =() => {
+     ctx.fill
+}
+
+
 const drawSnake = () => {
     ctx.fillstyle="#ddd"
 
@@ -42,10 +54,29 @@ if(direction == "down"){
     snake.shift()
 }
 
-const gameloop = () => {
-    clearInterval()
-    ctx.clearRect(0,0,600,600)
+const drawGrid = () => {
+    ctx.lineWidth = 1
+    ctx.strokeStyle = "#191919"
 
+  for (let i = 30; i< canvas.width; i += 30 ){
+    ctx.beginPath()
+    ctx.lineTo(i,0)
+    ctx.arc(i,600)
+    ctx.stroke()
+
+    ctx.beginPath()
+    ctx.lineTo(0, i)
+    ctx.arc(600 ,i)
+    ctx.stroke()
+  }
+}
+
+
+const gameloop = () => {
+    clearInterval(loopId)
+
+    ctx.clearRect(0,0,600,600)
+     drawGrid()
      moveSnake()
      drawSnake()
 
