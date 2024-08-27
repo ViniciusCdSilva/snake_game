@@ -10,16 +10,44 @@ const snake = [
     
 ]
 
-const food={
-    x:90,
-    y:90,
-    color: "yellow"
+const randomNumber = ( min, max) =>{
+     return Math.random (Math.random() * (max - min) + min)
+
+
 }
-let direction ,loopId
+
+const randomPosition = () =>{
+     const number = randomNumber(0, canvas.width - size)
+     return Match.round(number / 30) * 30
+}
+
+ const randomColor = () => {
+     const red = randomNumber( 0, 255)
+     const green= randomNumber( 0, 255)
+     const blue= randomNumber( 0, 255)
+
+     return' Rgb(${red},${green},${blue})'
+    
+ }
+
+const food = {
+    x: randomPosition(),
+    y: randomPosition(),
+    color: randomColor()
+}
+let direction , loopId
 
 const drawFood =() => {
-     ctx.fill
+
+    const { x,y,color} = food
+
+     ctx.shadowColor = color
+     ctx.shadowBlur = 6
+     ctx.fillStyle = color
+     ctx.fillRect( x, y,size, size)
+
 }
+
 
 
 const drawSnake = () => {
@@ -58,7 +86,7 @@ const drawGrid = () => {
     ctx.lineWidth = 1
     ctx.strokeStyle = "#191919"
 
-  for (let i = 30; i< canvas.width; i += 30 ){
+  for(let i = 30; i < canvas.width; i += 30 ){
     ctx.beginPath()
     ctx.lineTo(i,0)
     ctx.arc(i,600)
@@ -72,20 +100,21 @@ const drawGrid = () => {
 }
 
 
-const gameloop = () => {
+const gameLoop = () => {
     clearInterval(loopId)
 
     ctx.clearRect(0,0,600,600)
      drawGrid()
+     drawFood()
      moveSnake()
      drawSnake()
 
     let loopId = setTimeout(() =>{
-        gameloop()
+        gameLoop()
      },300)
 }
 
-gameloop()
+gameLoop()
 
 document.addEventListener("keydown",({key}) => {
     if( key == "ArrowRight" && direction != "left"){
