@@ -4,8 +4,9 @@ const ctx = canvas.getContext ("2d")
 const size = 30
 
 const snake = [
-    { x:270, y:240 },
-    {   x:300, y:240},
+      { x: 270, y: 240 },
+     { x: 300, y: 240 },
+      { x: 330, y: 240 }
    
     
 ]
@@ -16,24 +17,24 @@ const randomNumber = ( min, max) =>{
 
 }
 
-const randomPosition = () =>{
+const randomPosition = () => {
      const number = randomNumber(0, canvas.width - size)
      return Match.round(number / 30) * 30
 }
 
  const randomColor = () => {
      const red = randomNumber( 0, 255)
-     const green= randomNumber( 0, 255)
-     const blue= randomNumber( 0, 255)
+     const green = randomNumber( 0, 255)
+     const blue = randomNumber( 0, 255)
 
-     return' Rgb(${red},${green},${blue})'
+     return 'Rgb(${red} ,${green}, ${blue})'
     
  }
 
 const food = {
     x: randomPosition(),
     y: randomPosition(),
-    color: randomColor()
+    color: randomColor() 
 }
 let direction , loopId
 
@@ -65,6 +66,7 @@ const drawSnake = () => {
 
 const moveSnake = () => {
     if(!direction) return
+
     const head = snake[snake.length -1]
     
     if(direction == "right"){
@@ -99,19 +101,59 @@ const drawGrid = () => {
   }
 }
 
+const cheackEat = () => {
+    const head = snake[snake.length - 1]
+    
+    if(head.x == food.x && head.y == food.y){
+        snake.push(head)
+
+      let x =randomPosition()
+       let y =randomPosition()
+      
+       while(snake.find((position)=>position.x == x && position.y == y)){
+         x =randomPosition()
+         y =randomPosition()
+
+       }
+       food.x = x 
+       food.y = y
+       food.color = randomColor()
+        
+    
+    }
+}
+
+const checkCollision = () =>{
+      const head = snake[ snake.length - 1]
+      const canvasLimit = canvas.width - size
+       const neckIndex = snake.length -2  
+      const wallColision = head.x < 0 || head.x > canvasLimit|| head.y < 0 || head.y > canvasLimit
+
+      const selfCollision = snake.find((position, index) => {
+         return position.x == head.x && positioon.y == head.y
+
+      })
+         
+      if(wallColision){
+      alert(" Você perdeu ")}
+      
+}
 
 const gameLoop = () => {
     clearInterval(loopId)
 
     ctx.clearRect(0,0,600,600)
-     drawGrid()
-     drawFood()
-     moveSnake()
-     drawSnake()
+    drawGrid()
+    drawFood()
+    moveSnake()
+    drawSnake()
+    cheackEat()
+    checkCollision()
 
-    let loopId = setTimeout(() =>{
+
+    loopId = setTimeout(() =>{
         gameLoop()
-     },300)
+    },300)
 }
 
 gameLoop()
